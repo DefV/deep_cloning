@@ -5,29 +5,29 @@ module DeepCloning
     base.alias_method_chain :dup, :deep_cloning
   end
 
-  # clones an ActiveRecord model. 
-  # if passed the :include option, it will deep clone the given associations
-  # if passed the :except option, it won't clone the given attributes
+  # dups an ActiveRecord model. 
+  # if passed the :include option, it will deep dup the given associations
+  # if passed the :except option, it won't dup the given attributes
   #
   # === Usage:
   # 
   # ==== Cloning a model without an attribute
-  #   pirate.clone :except => :name
+  #   pirate.dup :except => :name
   # 
   # ==== Cloning a model without multiple attributes
-  #   pirate.clone :except => [:name, :nick_name]
+  #   pirate.dup :except => [:name, :nick_name]
   # ==== Cloning one single association
-  #   pirate.clone :include => :mateys
+  #   pirate.dup :include => :mateys
   #
   # ==== Cloning multiple associations
-  #   pirate.clone :include => [:mateys, :treasures]
+  #   pirate.dup :include => [:mateys, :treasures]
   #
   # ==== Cloning really deep
-  #   pirate.clone :include => {:treasures => :gold_pieces}
+  #   pirate.dup :include => {:treasures => :gold_pieces}
   #
   # ==== Cloning really deep with multiple associations
-  #   pirate.clone :include => [:mateys, {:treasures => :gold_pieces}]
-  # 
+  #   pirate.dup :include => [:mateys, {:treasures => :gold_pieces}]
+  #
   def dup_with_deep_cloning options = {}
     kopy = dup_without_deep_cloning()
     
@@ -57,3 +57,5 @@ module DeepCloning
     return kopy
   end
 end
+
+ActiveRecord::Base.send :include, DeepCloning
