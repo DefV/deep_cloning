@@ -10,19 +10,19 @@ Install with:
 == Example
 
 === Cloning a model without an attribute
-   pirate.clone :except => :name
+   pirate.dup :except => :name
  
 === Cloning a model without multiple attributes
-   pirate.clone :except => [:name, :nick_name]
+   pirate.dup :except => [:name, :nick_name]
 === Cloning one single association
-   pirate.clone :include => :mateys
+   pirate.dup :include => :mateys
 
 === Cloning multiple associations
-   pirate.clone :include => [:mateys, :treasures]
+   pirate.dup :include => [:mateys, :treasures]
 
 === Cloning really deep
-   pirate.clone :include => {:treasures => :gold_pieces}
+   pirate.dup :include => {:treasures => :gold_pieces}
 
 === Cloning really deep with multiple associations
-   pirate.clone :include => [:mateys, {:treasures => :gold_pieces}]
+   pirate.dup :include => [:mateys, {:treasures => :gold_pieces}]
 Copyright (c) 2008 Jan De Poorter, released under the MIT license

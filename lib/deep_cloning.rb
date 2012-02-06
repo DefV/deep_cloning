@@ -2,7 +2,7 @@
 
 module DeepCloning
   def self.included(base) #:nodoc:
-    base.alias_method_chain :clone, :deep_cloning
+    base.alias_method_chain :dup, :deep_cloning
   end
 
   # clones an ActiveRecord model. 
@@ -28,12 +28,12 @@ module DeepCloning
   # ==== Cloning really deep with multiple associations
   #   pirate.clone :include => [:mateys, {:treasures => :gold_pieces}]
   # 
-  def clone_with_deep_cloning options = {}
-    kopy = clone_without_deep_cloning
+  def dup_with_deep_cloning options = {}
+    kopy = dup_without_deep_cloning()
     
     if options[:except]
       Array(options[:except]).each do |attribute|
-        kopy.write_attribute(attribute, attributes_from_column_definition[attribute.to_s])
+        kopy.send("#{attribute}=", self.class.column_defaults[attribute.to_s])
       end
     end
     
@@ -46,9 +46,9 @@ module DeepCloning
         opts = deep_associations.blank? ? {} : {:include => deep_associations}
         cloned_object = case self.class.reflect_on_association(association).macro
                         when :belongs_to, :has_one
-                          self.send(association) && self.send(association).clone(opts)
+                          self.send(association) && self.send(association).dup(opts)
                         when :has_many, :has_and_belongs_to_many
-                          self.send(association).collect { |obj| obj.clone(opts) }
+                          self.send(association).collect { |obj| obj.dup(opts) }
                         end
         kopy.send("#{association}=", cloned_object)
       end
